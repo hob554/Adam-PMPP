@@ -69,6 +69,7 @@ Remove `--dry-run` to train. The runners skip CSV files that already exist. To p
 
 ## Experimental interpretation
 
+- The archived callback records the preceding epoch's training loss during validation. The plotting code therefore shifts finite training-loss entries back by one epoch; the final training-epoch loss is unavailable (curves end at epoch 99 for CIFAR-10 and 49 for PlantVillage). Validation metrics and archived CSV files are unchanged. Duplicate epoch rows retain the last record, including genuine zero validation accuracy.
 - The archived CIFAR-10 implementation retains a 15-output classifier for its 10 labels and uses the same ImageNet-style preprocessing as PlantVillage.
 - Adam-PMPP uses learning rate 0.00015 and batch size 128; Adam, RAdam, and AdaBelief use 0.001 and 256; SGD uses 0.01 and 256. Comparisons do not match update count or wall-clock cost.
 - The validation partition is monitored during training and used for reporting. CIFAR-10's standard test partition serves this validation role.

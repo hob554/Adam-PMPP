@@ -31,8 +31,9 @@ ABLATION_SEEDS = [1234, 5678, 9012]
 
 def load_history(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
-    df = df[df["val_acc"] > 0].copy()
-    return df.groupby("epoch", as_index=False).last().sort_values("epoch")
+    # Sanity validation and the first completed epoch share epoch=1.
+    # Keep the completed row without dropping a legitimate zero-accuracy epoch.
+    return df.drop_duplicates("epoch", keep="last").sort_values("epoch").copy()
 
 
 def aligned_arrays(paths: list[Path], column: str) -> tuple[np.ndarray, np.ndarray]:
@@ -87,6 +88,10 @@ def make_multiseed(data_root: Path, dataset: str, output_pdf: Path) -> None:
         for opt in OPTIMIZERS:
             label, color, linestyle, marker = OPT_STYLE[opt]
             epochs, values = cached[opt][column]
+            if column == "train_loss":
+                # This callback records the previous training epoch's aggregate.
+                # The final training epoch's loss is not present in the CSV.
+                epochs = epochs - 1
             finite_columns = np.isfinite(values).any(axis=0)
             epochs = epochs[finite_columns]
             values = values[:, finite_columns]
