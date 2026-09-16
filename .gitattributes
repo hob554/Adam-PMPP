@@ -1,0 +1,2 @@
+# Preserve archived file bytes so MANIFEST_SHA256.json is stable across platforms.
+* -text
