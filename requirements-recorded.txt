@@ -1,0 +1,12 @@
+# Versions in the audited runnable environment (2026-09-10).
+# Install a CUDA-compatible PyTorch build from the official PyTorch index.
+torch==2.11.0+cu128
+torchvision==0.26.0+cu128
+pytorch-lightning==2.6.1
+torchmetrics==1.9.0
+pandas==3.0.2
+numpy==2.4.4
+matplotlib==3.10.9
+seaborn==0.13.2
+adabelief-pytorch==0.2.1
+Pillow==12.2.0
